@@ -2,12 +2,12 @@
 
 import http from 'http';
 import WebSocket from 'ws';
-import WhiteboardServer from '../src/whiteboard-server';
+import ChatService from '../src/chat-server.js';
 
 let webServer;
 beforeAll((done) => {
   webServer = http.createServer();
-  const whiteboardServer = new WhiteboardServer(webServer, '/api/v1');
+  const chatServer = new ChatService(webServer, '/api/v1');
   // Use separate port for testing
   webServer.listen(3001, () => done());
 });
@@ -17,9 +17,9 @@ afterAll((done) => {
   webServer.close(() => done());
 });
 
-describe('WhiteboardServer tests', () => {
+describe('ChatService tests', () => {
   test('Connection opens successfully', (done) => {
-    const connection = new WebSocket('ws://localhost:3001/api/v1/whiteboard');
+    const connection = new WebSocket('ws://localhost:3001/api/v1/chat');
 
     connection.on('open', () => {
       connection.close();
@@ -31,8 +31,8 @@ describe('WhiteboardServer tests', () => {
     });
   });
 
-  test('WhiteboardServer replies correctly', (done) => {
-    const connection = new WebSocket('ws://localhost:3001/api/v1/whiteboard');
+  test('ChatService replies correctly', (done) => {
+    const connection = new WebSocket('ws://localhost:3001/api/v1/chat');
 
     connection.on('open', () => connection.send('test'));
 

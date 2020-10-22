@@ -6,7 +6,7 @@
 export type Message = { line: { from: { x: number, y: number }, to: { x: number, y: number } } };
 
 /**
- * Subscription class that enables multiple components to receive events from Whiteboard server.
+ * Subscription class that enables multiple components to receive events from Chat server.
  */
 export class Subscription {
   onopen: () => mixed = () => {};
@@ -16,17 +16,17 @@ export class Subscription {
 }
 
 /**
- * Service class to communicate with Whiteboard server.
+ * Service class to communicate with Chat server.
  *
  * Variables and functions marked with @private should not be used outside of this class.
  */
-class WhiteboardService {
+class ChatService {
   /**
-   * Connection to Whiteboard server.
+   * Connection to Chat server.
    *
    * @private
    */
-  connection = new WebSocket('ws://localhost:3000/api/v1/whiteboard');
+  connection = new WebSocket('ws://localhost:3000/api/v1/chat');
   /**
    * Component subscriptions.
    *
@@ -41,7 +41,7 @@ class WhiteboardService {
     };
 
     this.connection.onmessage = (event) => {
-      // Call subscription onmessage functions on messages from Whiteboard server
+      // Call subscription onmessage functions on messages from Chat server
       const data = event.data;
       if (typeof data == 'string')
         this.subscriptions.forEach((subscription) => subscription.onmessage(JSON.parse(data)));
@@ -74,7 +74,7 @@ class WhiteboardService {
   }
 
   /**
-   * Returns a subscription that enables multiple components to receive events from Whiteboard server.
+   * Returns a subscription that enables multiple components to receive events from Chat server.
    */
   subscribe() {
     const subscription = new Subscription();
@@ -96,19 +96,19 @@ class WhiteboardService {
   }
 
   /**
-   * Given subscription will no longer receive events from Whiteboard server.
+   * Given subscription will no longer receive events from Chat server.
    */
   unsubscribe(subscription: ?Subscription) {
     if (subscription) this.subscriptions.delete(subscription);
   }
 
   /**
-   * Send message to Whiteboard server.
+   * Send message to Chat server.
    */
   send(message: Message) {
     this.connection.send(JSON.stringify(message));
   }
 }
 
-const whiteboardService = new WhiteboardService();
-export default whiteboardService;
+const chatService = new ChatService();
+export default chatService;

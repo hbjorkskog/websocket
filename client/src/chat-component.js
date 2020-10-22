@@ -2,10 +2,10 @@
 
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import whiteboardService from './whiteboard-service';
+import chatService from './chat-service.js';
 import { Alert } from './widgets';
 
-export class Whiteboard extends Component {
+export class Chat extends Component {
   canvas = null;
   lastPos: ?{ x: number, y: number } = null;
   subscription = null;
@@ -14,13 +14,14 @@ export class Whiteboard extends Component {
   render() {
     return (
       <>
+        <h3>{this.connected ? 'Chat (Connected)' : 'Chat (Not connected)'}</h3>
         <canvas
           ref={(e) => (this.canvas = e) /* Store canvas element */}
           onMouseMove={(event: SyntheticMouseEvent<HTMLCanvasElement>) => {
-            // Send lines to Whiteboard server
+            // Send lines ts Chat server
             const pos = { x: event.clientX, y: event.clientY };
             if (this.lastPos && this.connected) {
-              whiteboardService.send({ line: { from: this.lastPos, to: pos } });
+              chatService.send({ line: { from: this.lastPos, to: pos } });
             }
             this.lastPos = pos;
           }}
@@ -28,14 +29,14 @@ export class Whiteboard extends Component {
           height={400}
           style={{ border: '2px solid black' }}
         />
-        <div>{this.connected ? 'Connected' : 'Not connected'}</div>
+        
       </>
     );
   }
 
   mounted() {
-    // Subscribe to whiteboardService to receive events from Whiteboard server in this component
-    this.subscription = whiteboardService.subscribe();
+    // Subscribe to chatService to receive events fros Chat server in this component
+    this.subscription = chatService.subscribe();
 
     // Called when the subscription is ready
     this.subscription.onopen = () => {
@@ -67,8 +68,8 @@ export class Whiteboard extends Component {
     };
   }
 
-  // Unsubscribe from whiteboardService when component is no longer in use
+  // Unsubscribe from chatService when component is no longer in use
   beforeUnmount() {
-    whiteboardService.unsubscribe(this.subscription);
+    chatService.unsubscribe(this.subscription);
   }
 }

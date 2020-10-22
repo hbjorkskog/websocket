@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from 'react';
-import { Whiteboard } from '../src/whiteboard-component.js';
+import { Chat } from '../src/chat-component.js';
 import { shallow } from 'enzyme';
 
 jest.mock('../src/whiteboard-service', () => {
@@ -9,7 +9,7 @@ jest.mock('../src/whiteboard-service', () => {
     onopen = () => {};
   }
 
-  class WhiteboardService {
+  class ChatService {
     constructor() {}
 
     subscribe() {
@@ -21,12 +21,12 @@ jest.mock('../src/whiteboard-service', () => {
       return subscription;
     }
   }
-  return new WhiteboardService();
+  return new ChatService();
 });
 
-describe('Whiteboard component tests', () => {
+describe('Chat component tests', () => {
   test('draws correctly when connected', (done) => {
-    const wrapper = shallow(<Whiteboard />);
+    const wrapper = shallow(<Chat />);
 
     expect(wrapper.containsMatchingElement(<div>Not connected</div>)).toEqual(true);
 
