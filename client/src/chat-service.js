@@ -2,11 +2,11 @@
 
 // In message from client
 
-export type ClientMessage = { addUser: string} | {removeUser: string} | {message: string};
+export type ClientMessage = {| text: string |} | {| addUser: string |} | {| removeUser: string |};
 
 // Out Message from server to client
 
-export type ServerMessage = { users: string[] } | { user: string, message: string };
+export type ServerMessage = {| text: string |} | {| users: string[] |};
 
 /**
  * Subscription class that enables multiple components to receive events from Chat server.
