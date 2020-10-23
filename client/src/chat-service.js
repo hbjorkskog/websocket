@@ -35,7 +35,7 @@ class ChatService {
    *
    * @private
    */
-  subscriptions = new Set<Subscription>(); // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
+  subscriptions = new Set<Subscription>();
 
   constructor() {
     this.connection.onopen = () => {
@@ -68,7 +68,6 @@ class ChatService {
    * @private
    */
   createError() {
-    // Error messages from https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
     if (this.connection.readyState == WebSocket.CLOSING)
       return new Error('The connection is in the process of closing.');
     else if (this.connection.readyState == WebSocket.CLOSED)

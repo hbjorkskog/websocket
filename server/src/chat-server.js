@@ -6,7 +6,7 @@ import WebSocket from 'ws';
 
 export type ClientMessage = {| text: string |} | {| addUser: string |} | {| removeUser: string |};
 
-// Out Message from server to client
+// Out message from server to client
 
 export type ServerMessage = {|  text: string |} | {| users: string[] |};
 
@@ -21,6 +21,7 @@ export default class ChatServer {
   constructor(webServer: http$Server | https$Server, path: string) {
     const server = new WebSocket.Server({ server: webServer, path: path + '/chat' });
 
+// Kopierte dette fra løsningsforslaget
     server.on('connection', (connection, request) => {
       connection.on('message', (message) => {
         if (typeof message == 'string') {
