@@ -179,12 +179,34 @@ export class ButtonLight extends Component<{
 }
 
 /**
+ * Renders a primary button using Bootstrap styles.
+ */
+export class ButtonPrimary extends Component<{
+  onClick: () => mixed,
+  small?: boolean,
+  children?: React.Node,
+}> {
+  render() {
+    return (
+      <button
+        type="button"
+        className={'btn btn-primary' + (this.props.small ? ' btn-sm py-0' : '')}
+        onClick={this.props.onClick}
+      >
+        {this.props.children}
+      </button>
+    );
+  }
+}
+
+/**
  * Renders a button using Bootstrap styles.
  */
 export class Button {
   static Success = ButtonSuccess;
   static Danger = ButtonDanger;
   static Light = ButtonLight;
+  static Primary = ButtonPrimary;
 }
 
 /**
