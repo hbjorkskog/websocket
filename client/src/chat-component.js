@@ -3,33 +3,19 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import chatService from './chat-service.js';
-import { Alert } from './widgets';
+import { Alert, ButtonSuccess } from './widgets';
 
-export class Chat extends Component {
-  canvas = null;
-  lastPos: ?{ x: number, y: number } = null;
+export class ChatMessage extends Component {
   subscription = null;
   connected = false;
+  input = '';
 
   render() {
     return (
       <>
         <h3>{this.connected ? 'Chat (Connected)' : 'Chat (Not connected)'}</h3>
-        <canvas
-          ref={(e) => (this.canvas = e) /* Store canvas element */}
-          onMouseMove={(event: SyntheticMouseEvent<HTMLCanvasElement>) => {
-            // Send lines ts Chat server
-            const pos = { x: event.clientX, y: event.clientY };
-            if (this.lastPos && this.connected) {
-              chatService.send({ line: { from: this.lastPos, to: pos } });
-            }
-            this.lastPos = pos;
-          }}
-          width={400}
-          height={400}
-          style={{ border: '2px solid black' }}
-        />
-        
+        <input type="text" id="messageBox" placeholder="Type your text here"/>
+        <ButtonSuccess onClick={ () => (console.log('Clicked Send button'))} >Send message</ButtonSuccess>   
       </>
     );
   }
