@@ -1,16 +1,19 @@
 // @flow
 
-/**
- * In and out message type (to and from server).
- */
-export type Message = { line: { from: { x: number, y: number }, to: { x: number, y: number } } };
+// In message from client
+
+export type ClientMessage = { addUser: string} | {removeUser: string} | {message: string};
+
+// Out Message from server to client
+
+export type ServerMessage = { users: string[] } | { user: string, message: string };
 
 /**
  * Subscription class that enables multiple components to receive events from Chat server.
  */
 export class Subscription {
   onopen: () => mixed = () => {};
-  onmessage: (Message) => mixed = () => {};
+  onmessage: (ServerMessage) => mixed = () => {};
   onclose: (code: number, reason: string) => mixed = () => {};
   onerror: (error: Error) => mixed = () => {};
 }
@@ -105,7 +108,7 @@ class ChatService {
   /**
    * Send message to Chat server.
    */
-  send(message: Message) {
+  send(message: ClientMessage) {
     this.connection.send(JSON.stringify(message));
   }
 }

@@ -2,6 +2,14 @@
 
 import WebSocket from 'ws';
 
+// In message from client
+
+export type ClientMessage = { addUser: string} | {removeUser: string} | {message: string};
+
+// Out Message from server to client
+
+export type ServerMessage = { users: string[] } | { user: string, message: string };
+
 /**
  * Chat server
  */
